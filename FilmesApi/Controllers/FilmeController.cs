@@ -15,6 +15,11 @@ namespace FilmesApi.Controllers
             filmes.Add(filme);
             Console.WriteLine(filme.Titulo);
         }
+        [HttpGet]
+        public List<Filme> RecuperaFilmes() 
+        {
+            return filmes;
+        }
         public IActionResult Index()
         {
             return View();
