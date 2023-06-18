@@ -27,6 +27,10 @@ namespace FilmesApi.Controllers
         {
             return filmes.FirstOrDefault(filme => filme.Id == id);
         }
+        public IEnumerable<Filme> RecuperaFilmes([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        {
+            return filmes.Skip(skip).Skip(skip).Take(take);
+        }
         public IActionResult Index()
         {
             return View();
