@@ -2,6 +2,7 @@
 using FilmesApi.Data;
 using FilmesApi.Dto;
 using FilmesApi.Model;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmesApi.Controllers
@@ -49,6 +50,25 @@ namespace FilmesApi.Controllers
                   filme => filme.Id == id);
             if (filme == null) return NotFound();
             _mapper.Map(filmeDto, filme);
+            _Context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult AtualizaFilmeParcial(int id, JsonPatchDocument<UpdateFilmeDto> patch)
+        {
+            var filme = _Context.Filmes.FirstOrDefault(
+                  filme => filme.Id == id);
+            if (filme == null) return NotFound();
+
+            var filmeParaAtualizar = _mapper.Map<UpdateFilmeDto>(filme);
+            patch.ApplyTo(filmeParaAtualizar, ModelState);
+
+            if (!TryValidateModel(filmeParaAtualizar))
+            {
+                return ValidationProblem(ModelState);
+            }
+            _mapper.Map(filmeParaAtualizar, filme);
             _Context.SaveChanges();
             return NoContent();
         }
