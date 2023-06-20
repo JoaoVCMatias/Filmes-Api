@@ -42,5 +42,15 @@ namespace FilmesApi.Controllers
 
             return Ok(filme);
         }
+        [HttpPut("{id}")]
+        public IActionResult AtualizaFilme(int id, [FromBody] UpdateFilmeDto filmeDto) 
+        {
+            var filme = _Context.Filmes.FirstOrDefault(
+                  filme => filme.Id == id);
+            if (filme == null) return NotFound();
+            _mapper.Map(filmeDto, filme);
+            _Context.SaveChanges();
+            return NoContent();
+        }
     }
 }

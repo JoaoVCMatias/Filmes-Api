@@ -9,6 +9,7 @@ namespace FilmesApi.profiles
         public FilmeProfile() 
         {
             CreateMap<CreateFilmeDto, Filme>();
+            CreateMap<UpdateFilmeDto, Filme>();
         }
     }
 }
